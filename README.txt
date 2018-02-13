@@ -1,6 +1,6 @@
 # Number reader:
 # This is a program that applies machine learning algorithm to recognize hand-written number
-# After training with more than 1000 samples, it is relative accurate now
+# After being trained with more than 1000 samples, it is relative accurate now
 #
 # In this folder, there are:
 #	numbers\
