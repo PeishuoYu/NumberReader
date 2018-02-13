@@ -1,6 +1,6 @@
 # NumberReader
 # in this folder, there are:
-#	number\
+#	numbers\
 #		0.txt		sample data with the right prediction at the end (part of training set)
 #		..txt		same as 0.txt
 #		test.png	the image of number that is used to make prediction
