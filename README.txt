@@ -1,5 +1,8 @@
-# NumberReader
-# in this folder, there are:
+# Number reader:
+# This is a program that applies machine learning algorithm to recognize hand-written number
+# After training with more than 1000 samples, it is relative accurate now
+#
+# In this folder, there are:
 #	numbers\
 #		0.txt		sample data with the right prediction at the end (part of training set)
 #		..txt		same as 0.txt
@@ -9,7 +12,7 @@
 #		model.txt	the file that is used to record a pre-established model
 #	node.py			the Python file that can train the model and make prediction
 #
-# instruction:
+# Instruction:
 #
 # open "Paint" application in windows and draw a number, save it as "test.png" under the number folder
 #
