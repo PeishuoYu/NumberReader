@@ -8,3 +8,16 @@
 #		sample.txt	a single file that have all the data of the training set
 #		model.txt	the file that is used to record a pre-established model
 #	node.py			the Python file that can train the model and make prediction
+#
+# instruction:
+#
+# open "Paint" application in windows and draw a number, save it as "test.png" under the number folder
+#
+# the PNG should be a square image
+#
+# run the makePrediction function, after the prediction is made, enter the right answer
+#
+# when you think you have enough samples, you can train the model using the training() function
+#
+# sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
+
