@@ -102,7 +102,7 @@ def choose_attribute(old_node, final_attribute=''):
     print('\nSorting ' + str(old_node.attribute) + ' based on: ' + final_attribute + '\nentropy: ' + str(entropy) + '\ninformation gain: ' +str(old_node.entropy - entropy) + '\n')
     return nodes
 
-# this is a driver to use the functions to generate model
+# this is a driver to use the functions to generate model and print how the dataSet is sorted
 def computing(node_list):
     for i in node_list:
         print(str(i)[:-15])
@@ -161,7 +161,7 @@ def exportModel(beginningNode):
     file.write(str(leaves))
     file.close()
 
-# an interactive_mode, really did not write some much about it, just used it to finish my MIS homework
+# an interactive_mode, really did not write some much about it
 def interactive_mode():
     # open file
     file = open('sample.txt', 'r')
@@ -269,7 +269,7 @@ def preparation():
     for i in range(1600):
         attribute_key[str(i)] = ['0', '1']
 
-# read all the file in trainingset and make a single file that contains all the trainset
+# read all the file in trainingset and make a single file that contains all sample
 def updateTrainingSet():
     newcontent = ''
     num = 1
@@ -287,6 +287,7 @@ def updateTrainingSet():
     file.write(newcontent[:-1])
     file.close()
 
+# this function is used to train the data
 def training(i = True):
     updateTrainingSet()
     file = open('numbers/sample.txt', 'r')
@@ -301,7 +302,6 @@ def training(i = True):
     exportModel(tree)
 
 def sampleResult():
-
     file = open('numbers/sample.txt', 'r')
     content = file.read()
     file.close()
@@ -313,11 +313,12 @@ def sampleResult():
     print(a)
 
 # instruction:
-# open "Paint" application and draw a number, save it as "test.png" under the number folder
+# open "Paint" application in windows and draw a number, save it as "test.png" under the number folder
 # the PNG should be a square image
 # run the makePrediction function, after the prediction is made, enter the right answer
 # when you think you have enough samples, you can train the model using the training() function
+# sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
 
-#training()
-makePrediction()
+training()
+#makePrediction()
 #sampleResult()
