@@ -21,7 +21,7 @@
 # package to read and manipulate images. Finally, I made this program.
 #
 # Instruction:
-# open "Paint" application in windows and draw a number, save it as "test.png" under the number folder
+# open "Paint" application in Windows and draw a number, save it as "test.png" under the number folder
 # the PNG should be a square image
 # run the makePrediction function, after the prediction is made, enter the right answer
 # when you think you have enough samples, you can train the model using the training() function
