@@ -18,7 +18,7 @@
 # and algorithm. After I developed a program that can solve the simple problem in textbook, I 
 # wanted to apply this algorithm to a more complicated setting, so I selected hand-written 
 # number recognation as my topic. To speed up sample generation, I learned how to use PIL 
-# package, and finally made this program.
+# package to read and manipulate images. Finally, I made this program.
 #
 # Instruction:
 # open "Paint" application in windows and draw a number, save it as "test.png" under the number folder
