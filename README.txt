@@ -11,6 +11,7 @@
 #		sample.txt	a single file that has all the data of the training set
 #		model.txt	the file that is used to record a pre-established model
 #	node.py			the Python file that can train the model and make prediction
+#	image example\		some image examples, you can see the weight of strokes 
 #
 # Why develping this program:
 # Recently I learned a machine learning algorithm in my data mining and predictive analytics
