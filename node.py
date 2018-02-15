@@ -2,16 +2,19 @@ import math
 import os
 from PIL import Image
 
+
 # eg. {'1':['1','0']} which means there is one attribute called '1', and it has two possible values, '0' and '1'.
 # in this program, because there are 1600 attributes, I will use a function to modify this dict, and leave it empty now.
 attribute_key = {}
 
+
 # the target attribute name and possible values, actually it is not used in the rest of program.
 target_key = {'number': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
 
+
 # a node class, attribute will record how the entire data have been sorted
 # dataSet is the dataSet after the entire dataSet have been sorted in the way that is recorded in attribute
-# entropy is calculated based on the dataSet
+# entropy is calculated based on the dataSet, when it reaches 0.0, it means that the dataset is pure
 # uptree is the connection to the uptree, it could be a node class or None
 # subtree is the connection to the subtree, it could be a list of node class or []
 class node():
@@ -22,6 +25,7 @@ class node():
         self.uptree = uptree
         self.subtree = []
 
+
     def __str__(self):
         result = 'Attributes: ' + str(self.attribute) + '\nentropy: ' + str(self.entropy)
         result += '\ndataset: ' + str(self.dataSet) + '\nuptree: '
@@ -31,7 +35,6 @@ class node():
             result += str(self.uptree.attribute) + ' ' + str(self.uptree.entropy) + '\nsubtree: \n' + self.print_subtree() + '\n'
         return result
 
-
     def print_subtree(self):
         if self.subtree == []:
             return 'None'
@@ -40,6 +43,7 @@ class node():
             for i in range(len(self.subtree)):
                 result += (str(i) + '. ' + str(self.subtree[i].attribute) + ' ' + str(self.subtree[i].entropy)+ '\n')
             return result
+
 
 # get the entropy of a dataSet
 def getEntropy(dataSet):
@@ -55,7 +59,8 @@ def getEntropy(dataSet):
         entropy -=(number[i]/total*math.log((number[i]/total),2))
     return entropy
 
-# get the entropy of a divided list, this can be used to calculate the information gain
+
+# get the entropy of a divided dataSet, this can be used to calculate the information gain
 def getDivideSetEntropy(dividedSet):
     entropy = 0
     total = 0
@@ -66,14 +71,15 @@ def getDivideSetEntropy(dividedSet):
     entropy /= total
     return entropy
 
+
 # if the second parameter is left blank
 # this function will choose the attribute that can most efficiently divide the dataSet of an old_node
 # and attach the new_node that are generated to the old_node
 # if the second parameter is not blank
 # this function will use the attribute provided to sort the data and do the same thing as before
-def choose_attribute(old_node, final_attribute=''):
+def choose_attribute(old_node, final_attribute = ''):
     nodes = []
-    if final_attribute !='':
+    if final_attribute != '':
         dividedSet = divideDataSet(old_node.dataSet, final_attribute)
         for singleSet in range(len(dividedSet)):
             entropy = getDivideSetEntropy(dividedSet)
@@ -102,7 +108,8 @@ def choose_attribute(old_node, final_attribute=''):
     print('\nSorting ' + str(old_node.attribute) + ' based on: ' + final_attribute + '\nentropy: ' + str(entropy) + '\ninformation gain: ' +str(old_node.entropy - entropy) + '\n')
     return nodes
 
-# this is a driver to use the functions to generate model and print how the dataSet is sorted
+
+# this is a driver that uses the functions to generate model and print how the dataSet is sorted
 def computing(node_list):
     for i in node_list:
         print(str(i)[:-15])
@@ -111,6 +118,7 @@ def computing(node_list):
         result = choose_attribute(i)
         if result != None:
             computing(result)
+
 
 # this will divide the dataSet according to the attribute provided, and return a list of dataSet that has been divided
 def divideDataSet(dataset, attribute):
@@ -122,6 +130,7 @@ def divideDataSet(dataset, attribute):
     for i in dataset:
         dividedSet[attribute_key[attribute].index(i[index])].append(i)
     return dividedSet
+
 
 # this function will take the root node of a model and return the information about the nodes that do not have subtree
 def getLeaf(beginningNode, leaves):
@@ -148,8 +157,10 @@ def getLeaf(beginningNode, leaves):
                 number = result[i]
         return [[attribute, judge, len(beginningNode.dataSet), beginningNode.entropy]]
 
-# this function export a model to a txt file, there will all the attribute and possible value, the target attribute and
-# possible value, and the model that has been established
+
+# this function export a model to a txt file, there will be all the attribute and possible value, the target attribute
+# and possible value, and the model that has been established (included attribute, predict result, number of occurrence,
+# and entropy
 def exportModel(beginningNode):
     file = open('numbers/model.txt', 'w')
     file.write('attributes:\n')
@@ -161,7 +172,9 @@ def exportModel(beginningNode):
     file.write(str(leaves))
     file.close()
 
-# an interactive_mode, really did not write some much about it
+
+# an interactive_mode, really did not write much about it, you can show the current node, show the subtree nodes,
+# show the uptree nodes, move the current node, and sort the current node.
 def interactive_mode():
     # open file
     file = open('sample.txt', 'r')
@@ -222,9 +235,11 @@ def interactive_mode():
             print('deleted')
         words = input()
 
-# make the prediction based on the existing model and the input from test.png
+
+# make the prediction based on the existing model file (model.txt) and the input from test.png
 # if the prediction is wrong, enter the right value, and this prediction question will be moved to training set
 def makePrediction():
+    # turn image into 0s and 1s, and save it to test.txt
     content = ''
     image = Image.open('numbers/test.png').resize((40, 40))
     image = list(image.getdata())
@@ -236,14 +251,16 @@ def makePrediction():
     file = open('numbers/test.txt', 'w')
     file.write(content)
     file.close()
+    # read the model from mode.txt, and make it ready for making prediction
     file = open('numbers/model.txt', 'r')
     content = file.readlines()
     file.close()
-    preparation()
     attribute = eval(content[1][:-1])
     target = eval(content[3][:-1])
     feature = eval(content[5])
-    possible = {}
+    # fill the attribute_key dict
+    preparation()
+    # find the attribute in the model that fit the data provided, and print the prediction
     for result in feature:
         fit = True
         for attribute in result[0]:
@@ -251,7 +268,9 @@ def makePrediction():
                 fit = False
         if fit:
             print('\n\n\n     Prediction: ' + result[1] + '\n\n\n')
-    rightAnswer = input('right answer?')
+    # prompt you to enter the right answer, if you enter, this prediction example will be saved in training set
+    # if you prefer not to save the prediction example to training set, just press enter and the program will close
+    rightAnswer = input('right answer? ')
     if rightAnswer != '':
         file = open('numbers/test.txt', 'r')
         content = file.read()
@@ -276,6 +295,7 @@ def updateTrainingSet():
     while os.path.exists('numbers/' + str(num) + '.txt'):
         file = open('numbers/' + str(num) + '.txt', 'r')
         content = file.read().replace('\n', '')
+        # making sure that each file has 1600 positions and one answer at the end
         if len(content)!= 1601:
             raise Exception('Number ' + str(num) + ' has problem.')
         for i in content:
@@ -287,7 +307,7 @@ def updateTrainingSet():
     file.write(newcontent[:-1])
     file.close()
 
-# this function is used to train the data
+# this function is used to train the data and export model
 def training(i = True):
     updateTrainingSet()
     file = open('numbers/sample.txt', 'r')
@@ -301,6 +321,7 @@ def training(i = True):
     computing([tree])
     exportModel(tree)
 
+# this function will tell you the number of samples of different Numbers ('0' - '9')
 def sampleResult():
     file = open('numbers/sample.txt', 'r')
     content = file.read()
@@ -315,10 +336,12 @@ def sampleResult():
 # instruction:
 # open "Paint" application in windows and draw a number, save it as "test.png" under the number folder
 # the PNG should be a square image
-# run the makePrediction function, after the prediction is made, enter the right answer
+# run the makePrediction function, after the prediction is made, the program will prompt you to enter the right answer,
+# if you enter the answer, this prediction example will be saved in training set
+# if you prefer not to save the prediction example to the training set, just press 'enter' and the program will close
 # when you think you have enough samples, you can train the model using the training() function
 # sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
 
-training()
-#makePrediction()
+#training()
+makePrediction()
 #sampleResult()
