@@ -24,9 +24,11 @@
 # Instruction:
 # open "Paint" application in Windows and draw a number, save it as "test.png" under the number folder
 # the PNG should be a square image
-# run the makePrediction function, after the prediction is made, the program will prompt you to enter the right answer,
+# run the makePrediction function, the program will make prediction based on image and model
+# after the prediction is made, the program will prompt you to enter the right answer
 # if you enter the answer, this prediction example will be saved in training set
-# if you prefer not to save the prediction example to the training set, just press 'enter' and the program will close
+# if you prefer not to save the prediction example to the training set, just press 'enter' and the 
+# program will close
 # when you think you have enough samples, you can train the model using the training() function
 # sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
 
