@@ -50,8 +50,8 @@
 # 		   train the model based on the sample provided (those saved in numbers folder)
 #		2) constraints against overfitting 
 #		   eg. training(minnum=20,maxdepth=5)
-#		       this tells us each sorted dataSet will have at least 20 pieces of data
-#		       and the maximum depth of the trees (attributes) will be less than 5
+#		       this tells us each sorted dataSet will has at least 20 pieces of data
+#		       and the maximum depth of the trees (attributes) will be 5
 # 	
 #	Sample Statistics:
 #		sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
