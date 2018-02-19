@@ -95,6 +95,13 @@ def choose_attribute(old_node, minnum = 0, maxdepth = -1, final_attribute = ''):
             return []
         for attribute in unusedAttributes:
             dividedSet = divideDataSet(old_node.dataSet, attribute)
+            ifcontinue = False
+            for i in dividedSet:
+                if len(i) < minnum:
+                    ifcontinue = True
+                    break
+            if ifcontinue:
+                continue
             if entropy > getDivideSetEntropy(dividedSet):
                 nodes = []
                 entropy = getDivideSetEntropy(dividedSet)
@@ -104,11 +111,9 @@ def choose_attribute(old_node, minnum = 0, maxdepth = -1, final_attribute = ''):
                     new_node_attribute[attribute] = attribute_key[attribute][singleSet]
                     new_node = node(new_node_attribute, dividedSet[singleSet], old_node)
                     nodes.append(new_node)
-    for i in nodes:
-        if len(i.dataSet) < minnum:
-            return []
-    old_node.subtree = nodes
-    print('\nSorting ' + str(old_node.attribute) + ' based on: ' + final_attribute + '\nentropy: ' + str(entropy) + '\ninformation gain: ' +str(old_node.entropy - entropy) + '\n')
+    if nodes != []:
+        old_node.subtree = nodes
+        print('\nSorting ' + str(old_node.attribute) + ' based on: ' + final_attribute + '\nentropy: ' + str(entropy) + '\ninformation gain: ' +str(old_node.entropy - entropy) + '\n')
     return nodes
 
 
@@ -346,6 +351,6 @@ def sampleResult():
 # when you think you have enough samples, you can train the model using the training() function
 # sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
 
-training(minnum=5,maxdepth=10)
+training()
 #makePrediction()
 #sampleResult()
