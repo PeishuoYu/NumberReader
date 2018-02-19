@@ -35,7 +35,7 @@
 #
 # Instructions:
 #
-#	Draw new number and make prediction:
+#	Draw new number and make prediction (and possibly sample generation):
 # 		1) open "Paint" application in Windows and draw a number, save it as "test.png" 
 #		   under the number folder, the PNG should be a SQUARE image
 # 		2) run the makePrediction function, the program will make prediction based on 
