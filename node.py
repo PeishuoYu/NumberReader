@@ -2,7 +2,6 @@ import math
 import os
 from PIL import Image
 
-
 # eg. {'1':['1','0']} which means there is one attribute called '1', and it has two possible values, '0' and '1'.
 # in this program, because there are 1600 attributes, I will use a function to modify this dict, and leave it empty now.
 attribute_key = {}
@@ -28,7 +27,7 @@ class node():
 
     def __str__(self):
         result = 'Attributes: ' + str(self.attribute) + '\nentropy: ' + str(self.entropy)
-        result += '\ndataset: ' + str(self.dataSet) + '\nuptree: '
+        result += '\nuptree: '
         if self.uptree is None:
             result += str(self.uptree) + '\nsubtree: \n' + self.print_subtree()
         else:
@@ -77,7 +76,7 @@ def getDivideSetEntropy(dividedSet):
 # and attach the new_node that are generated to the old_node
 # if the second parameter is not blank
 # this function will use the attribute provided to sort the data and do the same thing as before
-def choose_attribute(old_node, final_attribute = ''):
+def choose_attribute(old_node, minnum = 0, maxdepth = -1, final_attribute = ''):
     nodes = []
     if final_attribute != '':
         dividedSet = divideDataSet(old_node.dataSet, final_attribute)
@@ -88,11 +87,12 @@ def choose_attribute(old_node, final_attribute = ''):
             new_node = node(new_node_attribute, dividedSet[singleSet], old_node)
             nodes.append(new_node)
     else:
-        unusedAttributes = set(attribute_key.keys()) - set(old_node.attribute.keys())
+        unusedAttributes = attribute_key.keys() - old_node.attribute.keys()
         entropy = 100
         final_attribute = ''
-        if unusedAttributes == set() or getEntropy(old_node.dataSet) == 0:
-            return None
+        if unusedAttributes == set() or getEntropy(old_node.dataSet) == 0 or \
+                (len(old_node.attribute) == maxdepth and maxdepth > -1):
+            return []
         for attribute in unusedAttributes:
             dividedSet = divideDataSet(old_node.dataSet, attribute)
             if entropy > getDivideSetEntropy(dividedSet):
@@ -104,20 +104,23 @@ def choose_attribute(old_node, final_attribute = ''):
                     new_node_attribute[attribute] = attribute_key[attribute][singleSet]
                     new_node = node(new_node_attribute, dividedSet[singleSet], old_node)
                     nodes.append(new_node)
+    for i in nodes:
+        if len(i.dataSet) < minnum:
+            return []
     old_node.subtree = nodes
     print('\nSorting ' + str(old_node.attribute) + ' based on: ' + final_attribute + '\nentropy: ' + str(entropy) + '\ninformation gain: ' +str(old_node.entropy - entropy) + '\n')
     return nodes
 
 
 # this is a driver that uses the functions to generate model and print how the dataSet is sorted
-def computing(node_list):
+def computing(node_list, minnum, maxdepth):
     for i in node_list:
         print(str(i)[:-15])
     print('------------------------------------------')
     for i in node_list:
-        result = choose_attribute(i)
-        if result != None:
-            computing(result)
+        result = choose_attribute(i, minnum, maxdepth)
+        if result != []:
+            computing(result, minnum, maxdepth)
 
 
 # this will divide the dataSet according to the attribute provided, and return a list of dataSet that has been divided
@@ -155,7 +158,7 @@ def getLeaf(beginningNode, leaves):
             if result[i] > number:
                 judge = i
                 number = result[i]
-        return [[attribute, judge, len(beginningNode.dataSet), beginningNode.entropy]]
+        return [[attribute, judge, len(beginningNode.dataSet), number, beginningNode.entropy]]
 
 
 # this function export a model to a txt file, there will be all the attribute and possible value, the target attribute
@@ -225,7 +228,7 @@ def interactive_mode():
             number = int(input('which option: '))
             try:
                 attribute = list(attribute_key)[number]
-                choose_attribute(tree, attribute)
+                choose_attribute(tree, final_attribute=attribute)
                 print('sorted')
             except:
                 print('invalid input')
@@ -259,7 +262,8 @@ def makePrediction():
     target = eval(content[3][:-1])
     feature = eval(content[5])
     # fill the attribute_key dict
-    preparation()
+    if attribute_key == {}:
+        preparation()
     # find the attribute in the model that fit the data provided, and print the prediction
     for result in feature:
         fit = True
@@ -308,17 +312,17 @@ def updateTrainingSet():
     file.close()
 
 # this function is used to train the data and export model
-def training(i = True):
+def training(minnum = 0, maxdepth = -1):
     updateTrainingSet()
     file = open('numbers/sample.txt', 'r')
     content = file.read()
     content = content.split('\n')
-    if i:
+    if attribute_key == {}:
         preparation()
     for i in range(len(content)):
         content[i] = content[i].split(',')
     tree = node({},content)
-    computing([tree])
+    computing([tree], minnum, maxdepth)
     exportModel(tree)
 
 # this function will tell you the number of samples of different Numbers ('0' - '9')
@@ -342,6 +346,6 @@ def sampleResult():
 # when you think you have enough samples, you can train the model using the training() function
 # sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
 
-#training()
-makePrediction()
+training(minnum=5,maxdepth=10)
+#makePrediction()
 #sampleResult()

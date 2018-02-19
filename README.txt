@@ -1,3 +1,12 @@
+# Update 02/19/2018
+#	Added dataSet size constraint and tree depth constraint against overfitting
+#		You can see how to use them in instructions
+#
+#	Note: These two features are not for the purpose of number recognition, since no
+#	      different numbers are written in the same way, there are always differences.
+#	      These two features are more for general machine learning practice
+#
+#
 # Number reader:
 # This is a program in which I applied machine learning algorithm to recognize hand-written number
 # After being trained with more than 1000 samples, it is relative accurate now
@@ -21,15 +30,80 @@
 # number recognation as my topic. To speed up sample generation, I learned how to use PIL 
 # package to read and manipulate images. Finally, I made this program.
 #
-# Instruction:
-# open "Paint" application in Windows and draw a number, save it as "test.png" under the number folder
-# the PNG should be a square image
-# run the makePrediction function, the program will make prediction based on image and model
-# after the prediction is made, the program will prompt you to enter the right answer
-# if you enter the answer, this prediction example will be saved in training set
-# if you prefer not to save the prediction example to the training set, just press 'enter' and the 
-# program will close
-# when you think you have enough samples, you can train the model using the training() function
-# sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
-
-
+# Instructions:
+#
+#	Draw new number and make prediction:
+# 		1) open "Paint" application in Windows and draw a number, save it as "test.png" 
+#		   under the number folder, the PNG should be a SQUARE image
+# 		2) run the makePrediction function, the program will make prediction based on 
+#		   image and model
+# 		3) after the prediction is made, the program will prompt you to enter the right 
+#		   answer, if you enter the answer, this prediction example will be saved in 
+#		   training set, if you prefer not to save the prediction example to the training 
+#		   set, just press 'enter' and the program will close
+# 
+#	Training:
+# 		1) you can train the model using the training() function, it will automatically 
+# 		   train the model based on the sample provided (those saved in numbers folder)
+#		2) constraints against overfitting 
+#		   eg. training(minnum=20,maxdepth=5)
+#		       this tells us each sorted dataSet will have at least 20 piece of data
+#		       and the maximum depth of the trees (attributes) will be less than 5
+# 	Sample Statistics:
+#		sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
+#
+# Model example:
+#
+#	[{'740': '0', '585': '0', '1374': '1', '1174': '0'}, '8', 43, 17, 2.2826030623075226]
+#
+#		1) position 740, 585, and 490 have to be black, position 1374 has to be white
+#		2) based on the sample that fit the requirements, the model thinks the number is '8'
+#		3) there are 43 pieces of data fit this model, and 17 of them are '8'
+#		4) the entropy of this dataSet it 2.2826, which is far from 0, this means the model
+#	   	   is not quite sure about the prediction
+#
+# Sample example:
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111000000000111111111111111111111
+#	1111111110000000000011111111111111111111
+#	1111111111000000000001111111111111111111
+#	1111111111000000000001111111111111111111
+#	1111111111100000000000111111111111111111
+#	1111111111111111000000011111111111111111
+#	1111111111111111100000011111111111111111
+#	1111111111111111100000011111111111111111
+#	1111111111111111110000011111111111111111
+#	1111111111111111100000011111111111111111
+#	1111111111111111100000011111111111111111
+#	1111111111111111000000111111111111111111
+#	1111111111111110000000111111111111111111
+#	1111111111111100000001111111111111111111
+#	1111111111111000000001111111111111111111
+#	1111111111100000000011111111111111111111
+#	1111111111000000000111111111111111111111
+#	1111111100000000001111111111111111111111
+#	1111111000000000111111111111111111111111
+#	1111110000000001111111111111111111111111
+#	1111100000000011111111111111111100000011
+#	1111100000000000000000000000000000000011
+#	1111100000000000000000000000000000000011
+#	1111110000000000000000000000000000000011
+#	1111110000000000000000000000000000000011
+#	1111111111000000000000000000000000000011
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	1111111111111111111111111111111111111111
+#	2
+#
+#	40*40 grid, 0s represent black, 1s represent white, right prediction at the end
+#
