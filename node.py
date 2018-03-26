@@ -351,6 +351,6 @@ def sampleResult():
 # when you think you have enough samples, you can train the model using the training() function
 # sampleResult() will tell you the number of samples of different Numbers ('0' - '9')
 
-training()
+training(minnum=30)
 #makePrediction()
 #sampleResult()
